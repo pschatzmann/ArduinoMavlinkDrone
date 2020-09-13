@@ -1,5 +1,5 @@
 # A Simple Arduino Mavlink Drone Library
-I was looking for an easy to implement solution to control my RC Airplane (which is based on a ESP32) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) which is based on Mavlink. 
+I was looking for an easy to implement solution to control my RC Airplane (which is based on a ESP32) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) which is based on [Mavlink](https://mavlink.io/en/). 
 
 The project provides the following features:
 
