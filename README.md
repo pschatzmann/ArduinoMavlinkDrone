@@ -1,13 +1,14 @@
 # A Simple Arduino Mavlink Drone Library
-I was looking for an easy to implement solution to control my RC Airplane (which is based on a ESP32) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) wich is based on Mavlink. 
+I was looking for an easy to implement solution to control my RC Airplane (which is based on a ESP32) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) which is based on Mavlink. 
 
 The project provides the following features:
-- It is available as Aruino Library which should work on any architecture.
+
+- It is available as Aruino Library (which should work on any architecture)
 - you can easily overwrite any method if you desire a different behavoir
-- I provide a simple parameter store, so that you can access the parameter values
+- A simple extendable parameter store is provided, so that you can access the parameter values
 - There are examples for Bluetooth, TCP/IP and UDP (for the ESP32)
 
-My code is heavily relying on Dan Zimmermans [Barebones_MAVLink Project](https://github.com/danzimmerman/barebones_MAVLink). So many thinks to him!
+My code is heavily relying on Dan Zimmermans [Barebones_MAVLink work](https://github.com/danzimmerman/barebones_MAVLink). So many thinks to him!
 
 ## Bluetooth Example
 Here is the Demo how to use it on a ESP32 with Bluetooth:
