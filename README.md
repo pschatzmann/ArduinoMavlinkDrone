@@ -1,9 +1,9 @@
 # A Simple Arduino Mavlink Drone Library
-I was looking for an easy to implement solution to control my RC Airplane (which is based on a ESP32) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) which is based on [Mavlink](https://mavlink.io/en/). 
+I was looking for an easy to implement solution to control my RC Airplane (that is using a ESP32 micro controller) with the help of a Mobile Application. I decided to use [QGroundControl](http://qgroundcontrol.com/) which is based on [Mavlink](https://mavlink.io/en/). 
 
 The project provides the following features:
 
-- It is available as __Aruino Library__ (which should work on any architecture)
+- It is available as __Arduino Library__ (which should work on any architecture)
 - you can easily __overwrite any method__ if you desire a different behavoir
 - A simple extendable __parameter store__ is provided, so that you can access the parameter values
 - There are examples for __Bluetooth__, __TCP/IP__ and __UDP__ (for the ESP32)
@@ -11,7 +11,7 @@ The project provides the following features:
 My code is heavily relying on Dan Zimmermans [Barebones_MAVLink work](https://github.com/danzimmerman/barebones_MAVLink). So many thinks to him!
 
 ## Bluetooth Example
-Here is the Demo how to use it on a ESP32 with Bluetooth:
+Here is a simple demo that shows how to use it on a ESP32 with Bluetooth:
 
 ```
 
@@ -137,7 +137,7 @@ void loop() {
 - Define the __Communication Link__: e.g. UDP. The IP address is displayed when you start the sketch
 - In General (Settings) in the Fly Vue Section activate the __Visual Joystick__
 - If you click on the 'Airplane' icon you can see and use the __joysticks__
-- Click on __Arm__ and conform
+- Click on __Arm__ and confirm
 
 and now you are __ready to fly__!
 
