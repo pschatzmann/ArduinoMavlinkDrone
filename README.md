@@ -3,10 +3,10 @@ I was looking for an easy to implement solution to control my RC Airplane (which
 
 The project provides the following features:
 
-- It is available as Aruino Library (which should work on any architecture)
-- you can easily overwrite any method if you desire a different behavoir
-- A simple extendable parameter store is provided, so that you can access the parameter values
-- There are examples for Bluetooth, TCP/IP and UDP (for the ESP32)
+- It is available as __Aruino Library__ (which should work on any architecture)
+- you can easily __overwrite any method__ if you desire a different behavoir
+- A simple extendable __parameter store__ is provided, so that you can access the parameter values
+- There are examples for __Bluetooth__, __TCP/IP__ and __UDP__ (for the ESP32)
 
 My code is heavily relying on Dan Zimmermans [Barebones_MAVLink work](https://github.com/danzimmerman/barebones_MAVLink). So many thinks to him!
 
