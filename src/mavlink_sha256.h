@@ -5,7 +5,7 @@
   modifications to suit mavlink headers
  */
 /*
- * Copyright (c) 1995 - 2001 Kungliga Tekniska Högskolan
+ * Copyright (c) 1995 - 2001 Kungliga Tekniska Hï¿½gskolan
  * (Royal Institute of Technology, Stockholm, Sweden).
  * All rights reserved.
  * 
@@ -49,6 +49,8 @@ namespace mavlink {
 #ifndef MAVLINK_HELPER
 #define MAVLINK_HELPER
 #endif
+
+#undef F 
 
 typedef struct {
   uint32_t sz[2];

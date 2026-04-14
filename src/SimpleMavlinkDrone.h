@@ -9,7 +9,7 @@
 #ifndef __SimpleMavlinkDrone_H__
 #define __SimpleMavlinkDrone_H__
 
-#include "arduino.h"
+#include "Arduino.h"
 #include "mavlink.h"
 #include "math.h"
 #include "ParameterStore.h"
@@ -56,8 +56,8 @@ class SimpleMavlinkDrone {
         virtual void processStatGPS();
         virtual void processStatRadioStatus();
 
-        void log(char* str);
-        void log(char* str, int num);
+        void log(const char* str);
+        void log(const char* str, int num);
 
     public:
         /**

@@ -12,12 +12,13 @@ int SimpleUDP::available() {
         size = parsePacket();
     }
     return size;
-};
+}
 
 size_t SimpleUDP::write(const uint8_t *buffer, size_t size) {
     beginPacket(remoteIP(), remotePort());
-    WiFiUDP::write(buffer,size);
+    size_t written = WiFiUDP::write(buffer, size);
     endPacket();
-};
+    return written;
+}
 
 

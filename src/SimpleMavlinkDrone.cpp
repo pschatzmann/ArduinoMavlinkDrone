@@ -118,7 +118,7 @@ void SimpleMavlinkDrone::processRequest() {
       break;
     }
     default:
-      log("Unprocessed msgid:",mvl_rx_message.msgid);
+  log("Unprocessed msgid:",mvl_rx_message.msgid);
   }
 }
 
@@ -214,7 +214,7 @@ void SimpleMavlinkDrone::handleCommandLong(mavlink_message_t* mvl_msg_ptr) {
       break;
     }//end handling of arm/disarm command
     default: {
-      log("Unprocessed command: ", mvl_cmd.command);
+  log("Unprocessed command: ", mvl_cmd.command);
     }
   }//end switch/case
 }//end MVL_Handle_Command_Long()
@@ -318,12 +318,12 @@ void SimpleMavlinkDrone::setLog(Stream &log){
   logStreamPtr = &log;
 }
 
-void SimpleMavlinkDrone::log(char* str) {
+void SimpleMavlinkDrone::log(const char* str) {
   if(logStreamPtr)
     logStreamPtr->println(str);
 }
 
-void SimpleMavlinkDrone::log(char* str, int num) {
+void SimpleMavlinkDrone::log(const char* str, int num) {
   if(logStreamPtr){
     logStreamPtr->print(str);
     logStreamPtr->println(num);

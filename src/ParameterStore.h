@@ -6,7 +6,7 @@
  * management base class which can easyly be extended or overwritten with your own implementation.
  */
 
-#include "arduino.h"
+#include "Arduino.h"
 
 #define THROTTLE            0  // from 0 to 1.0  
 #define YAW                 1  // from -100.0 to 100.0 // Rudder 
