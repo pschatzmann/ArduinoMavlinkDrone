@@ -12,6 +12,9 @@
 #ifndef __SimpleMavlinkDrone_H__
 #define __SimpleMavlinkDrone_H__
 
+// ignore warnings about taking the address of packed struct members, which is
+#pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+
 #include "Arduino.h"
 #include "ParameterStore.h"
 #include "math.h"
@@ -49,7 +52,7 @@ class SimpleMavlinkDrone {
   /// Constructor with Stream pointer and ParameterStore pointer
   SimpleMavlinkDrone(Stream* str = nullptr, ParameterStore* parameters = nullptr);
   /// Constructor with Stream reference
-  SimpleMavlinkDrone(Stream& str) : SimpleMavlinkDrone(&str, nullptrptr) {};
+  SimpleMavlinkDrone(Stream& str) : SimpleMavlinkDrone(&str, nullptr) {};
 
   /// Destructor
   ~SimpleMavlinkDrone();
@@ -76,11 +79,11 @@ class SimpleMavlinkDrone {
   void setLog(Stream& log);
 
  private:
-  MessageCallback messageCallback = nullptrptr;
-  Stream* stream;
-  Stream* logStreamPtr;
-  ParameterStore* parameterStore;
-  bool releaseParameterStore;
+  MessageCallback messageCallback = nullptr;
+  Stream* stream = nullptr;
+  Stream* logStreamPtr = nullptr;
+  ParameterStore* parameterStore = nullptr;
+  bool releaseParameterStore = false;;
   mavlink_message_t mvl_tx_message;  // A special MAVLink message data
                                      // structure.
   mavlink_message_t mvl_rx_message;
