@@ -46,8 +46,10 @@ class SimpleMavlinkDrone {
   /// Callback type: returns bool, takes SimpleMavlinkDrone& and
   /// mavlink_message_t&
   typedef bool (*MessageCallback)(SimpleMavlinkDrone&, mavlink_message_t&);
-  /// Default Constructor
-  SimpleMavlinkDrone(Stream* str = NULL, ParameterStore* parameters = NULL);
+  /// Constructor with Stream pointer and ParameterStore pointer
+  SimpleMavlinkDrone(Stream* str = nullptr, ParameterStore* parameters = nullptr);
+  /// Constructor with Stream reference
+  SimpleMavlinkDrone(Stream& str = nullptr) : SimpleMavlinkDrone(&str, nullptrptr) {};
 
   /// Destructor
   ~SimpleMavlinkDrone();
@@ -74,7 +76,7 @@ class SimpleMavlinkDrone {
   void setLog(Stream& log);
 
  private:
-  MessageCallback messageCallback = nullptr;
+  MessageCallback messageCallback = nullptrptr;
   Stream* stream;
   Stream* logStreamPtr;
   ParameterStore* parameterStore;
