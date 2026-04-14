@@ -9,8 +9,8 @@
 #include "SimpleMavlinkDrone.h"
 
 const int port = 5760;
-const char* ssid = "Phil Schatzmann";
-const char* password = "sabrina01";
+const char* ssid = "ssid";
+const char* password = "password";
 WiFiServer server(port);
 SimpleMavlinkDrone drone;
 

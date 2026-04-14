@@ -8,8 +8,8 @@
 #include "SimpleMavlinkDrone.h"
 
 const int port = 14550;
-const char* ssid = "Phil Schatzmann";
-const char* password = "sabrina01";
+const char* ssid = "ssid";
+const char* password = "password";
 SimpleUDP udp; //WiFiUDP udp;
 SimpleMavlinkDrone drone(&udp);
 
