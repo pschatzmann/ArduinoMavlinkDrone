@@ -49,7 +49,7 @@ class SimpleMavlinkDrone {
   /// Constructor with Stream pointer and ParameterStore pointer
   SimpleMavlinkDrone(Stream* str = nullptr, ParameterStore* parameters = nullptr);
   /// Constructor with Stream reference
-  SimpleMavlinkDrone(Stream& str = nullptr) : SimpleMavlinkDrone(&str, nullptrptr) {};
+  SimpleMavlinkDrone(Stream& str) : SimpleMavlinkDrone(&str, nullptrptr) {};
 
   /// Destructor
   ~SimpleMavlinkDrone();
