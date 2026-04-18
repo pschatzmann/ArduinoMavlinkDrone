@@ -8,6 +8,7 @@
 #define __SIMPLEUPD_H__
 
 #include <WiFiUdp.h>
+using namespace arduino;
 
 class SimpleUDP : public WiFiUDP {
 
