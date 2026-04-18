@@ -13,7 +13,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(arduino_emulator)
 
 file(GLOB SOURCES src/*.cpp)
-add_library(ArduinoMavlinkDrone STATIC ${SOURCES})
+option(BUILD_SHARED_LIBS "Build shared library instead of static" OFF)
+add_library(ArduinoMavlinkDrone ${SOURCES})
 target_include_directories(ArduinoMavlinkDrone PUBLIC src
     ${arduinoemulator_SOURCE_DIR}/src
 )
