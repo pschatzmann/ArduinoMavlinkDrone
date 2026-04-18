@@ -16,6 +16,7 @@ file(GLOB SOURCES src/*.cpp)
 option(BUILD_SHARED_LIBS "Build shared library instead of static" OFF)
 add_library(ArduinoMavlinkDrone ${SOURCES})
 target_include_directories(ArduinoMavlinkDrone PUBLIC src
-    ${arduinoemulator_SOURCE_DIR}/src
+    ${arduino_emulator_SOURCE_DIR}/src
 )
 target_link_libraries(ArduinoMavlinkDrone arduino_emulator)
+target_compile_options(ArduinoMavlinkDrone PRIVATE -Wno-address-of-packed-member)
