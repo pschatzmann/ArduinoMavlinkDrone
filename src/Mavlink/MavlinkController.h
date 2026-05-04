@@ -189,6 +189,16 @@ class MavlinkController {
     return stream->write(tx_byte_buffer, tx_buflen);
   }
 
+  /// trasmit a command acknowledgment message
+  void transmitAck(uint16_t command, bool accepted) {
+    mavlink_command_ack_t ack{};
+    ack.command = command;
+    ack.result = accepted ? MAV_RESULT_ACCEPTED : MAV_RESULT_UNSUPPORTED;
+    mavlink_msg_command_ack_encode_chan(mvl_sysid, mvl_compid, mvl_chan,
+                                        &mvl_tx_message, &ack);
+    transmitMessage(&mvl_tx_message);
+  }
+
   virtual void handleManualControl(mavlink_message_t* mvl_msg_ptr) {
     MAV_INFO("handleManualControl");
     mavlink_manual_control_t mvl_joy;
@@ -247,7 +257,7 @@ class MavlinkController {
       }
       case MAV_CMD_REQUEST_MESSAGE: {
         if (mvl_cmd.param1 == 259) {
-           sendAck(MAV_CMD_REQUEST_CAMERA_INFORMATION, camera_active);
+           transmitAck(MAV_CMD_REQUEST_CAMERA_INFORMATION, camera_active);
         } else {
           MAV_INFO("unprocessed MAV_CMD_REQUEST_MESSAGE with param1: %u",
                    mvl_cmd.param1);
@@ -255,22 +265,13 @@ class MavlinkController {
         break;
       }
       case MAV_CMD_REQUEST_CAMERA_INFORMATION: {
-        sendAck(MAV_CMD_REQUEST_CAMERA_INFORMATION, camera_active);
+        transmitAck(MAV_CMD_REQUEST_CAMERA_INFORMATION, camera_active);
         break;
       }
       default: {
         MAV_INFO("Unprocessed command: %d", mvl_cmd.command);
       }
     }
-  }
-
-  void sendAck(uint16_t command, bool accepted) {
-    mavlink_command_ack_t ack{};
-    ack.command = command;
-    ack.result = accepted ? MAV_RESULT_ACCEPTED : MAV_RESULT_UNSUPPORTED;
-    mavlink_msg_command_ack_encode_chan(mvl_sysid, mvl_compid, mvl_chan,
-                                        &mvl_tx_message, &ack);
-    transmitMessage(&mvl_tx_message);
   }
 
   virtual void handleMissionRequestList(mavlink_message_t* mvl_msg_ptr) {
