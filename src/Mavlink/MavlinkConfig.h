@@ -30,8 +30,8 @@
 // --- Logging ---
 #define MAVLINK_MAX_LOG_SIZE       12
 
-#define MAVLINK_USE_ESPLOGGER      true
-
+// --- ESP32 Logging ---
+#define MAVLINK_USE_ESP_LOGGER      true
 
 // ignore warnings about taking the address of packed struct members, which is
 #pragma GCC diagnostic ignored "-Waddress-of-packed-member"

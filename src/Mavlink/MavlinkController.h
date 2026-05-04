@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 pschatzmann
 
-
 #pragma once
 
 #include "Arduino.h"
+#include "MavlinkConfig.h"  // must be included before mavlink.h to set the necessary defines
 #include "MavlinkLogger.h"
 #include "MavlinkSystem.h"
 #include "ParameterStore.h"
-#include "MavlinkConfig.h" // must be included before mavlink.h to set the necessary defines
 #include "common/mavlink.h"
 #include "math.h"
 
@@ -49,7 +48,7 @@ class MavlinkController {
 
   /// Constructor with optional Stream and ParameterStore
   MavlinkController(Stream* str = nullptr,
-                     ParameterStore* parameters = nullptr) {
+                    ParameterStore* parameters = nullptr) {
     MAV_INFO("MavlinkController");
     stream = str;
     releaseParameterStore = parameters == nullptr;
@@ -91,9 +90,13 @@ class MavlinkController {
       uint8_t rxbyte = stream->read();
       mvl_packet_received =
           mavlink_parse_char(mvl_chan, rxbyte, &mvl_rx_message, &mvl_rx_status);
-      if (mvl_packet_received) break;
+      if (mvl_packet_received) {
+        MAV_INFO("Received msgid: %d from sysid: %d", mvl_rx_message.msgid,
+                 mvl_rx_message.sysid);
+        break;
+      }
     }
-    if ((mvl_packet_received) && (255 == mvl_rx_message.sysid)) {
+    if ((mvl_packet_received) && (mavlink_system_id == mvl_rx_message.sysid)) {
       bool handled = false;
       if (messageCallback) {
         handled = messageCallback(*this, mvl_rx_message);
@@ -124,8 +127,23 @@ class MavlinkController {
   /// Set the callback for custom MAVLink message handling
   void setMessageCallback(MessageCallback cb) { messageCallback = cb; }
 
+  /// Defines the system ID for incoming MAVLink messages (1-255)
+  bool setSystemId(int id) {
+    if (id < 1 || id > 255) {
+      MAV_ERROR("setSystemId: invalid system ID %d", id);
+      return false;
+    }
+    mavlink_system_id = id;
+    MAV_INFO("System ID set to %d", mavlink_system_id);
+    return true;
+  }
+  
+  /// Get the current system ID
+  int getSystemId() const { return mavlink_system_id; }
+
  protected:
   static constexpr size_t TX_BUFFER_SIZE = 512;
+  int mavlink_system_id = 255;  // Default system ID for incoming messages
   MessageCallback messageCallback = nullptr;
   Stream* stream = nullptr;
   ParameterStore* parameterStore = nullptr;

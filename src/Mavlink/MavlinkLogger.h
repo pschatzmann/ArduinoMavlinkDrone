@@ -7,12 +7,12 @@
 #include "MavlinkConfig.h"
 
 #if !defined(ESP32)
-#undef MAVLINK_USE_ESPLOGGER
-#define MAVLINK_USE_ESPLOGGER false
+#undef MAVLINK_USE_ESP_LOGGER
+#define MAVLINK_USE_ESP_LOGGER false
 #endif
 
 
-#if MAVLINK_USE_ESPLOGGER
+#if MAVLINK_USE_ESP_LOGGER
 #define MAV_ERROR(...)   ESP_LOGE("MAVLINK", __VA_ARGS__)
 #define MAV_WARN(...)    ESP_LOGW("MAVLINK", __VA_ARGS__)
 #define MAV_INFO(...)    ESP_LOGI("MAVLINK", __VA_ARGS__)
