@@ -26,9 +26,11 @@ class SimpleUDP : public WiFiUDP {
     if (size == 0) {
       size = parsePacket();
     }
+    MAV_DEBUG("SimpleUDP::available() = %d", size);
     return size;
   }
   size_t write(const uint8_t* buffer, size_t size) override {
+    MAV_DEBUG("SimpleUDP::write(%d bytes)", size);
     beginPacket(remoteIP(), remotePort());
     size_t written = WiFiUDP::write(buffer, size);
     endPacket();

@@ -18,17 +18,17 @@
 #define MAVLINK_MAX_PAYLOAD_LEN     255
 
 // --- Identity ---
-#define MAVLINK_SYSTEM_ID           42
+#define MAVLINK_SYSTEM_ID           255
 #define MAVLINK_COMPONENT_ID        200
 
 // --- Signing ---
 #define MAVLINK_USE_SIGNING         0
 
 // --- Convenience ---
-#define MAVLINK_USE_CONVENIENCE_FUNCTIONS
+//#define MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
 // --- Logging ---
-#define MAVLINK_MAX_LOG_SIZE       12
+#define MAVLINK_MAX_LOG_SIZE       120
 
 // --- ESP32 Logging ---
 #define MAVLINK_USE_ESP_LOGGER      true

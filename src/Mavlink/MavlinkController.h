@@ -86,14 +86,19 @@ class MavlinkController {
   /// Main loop: processes MAVLink messages and telemetry
   virtual void loop() {
     timestamp = millis();
-    while (stream && stream->available()) {
-      uint8_t rxbyte = stream->read();
-      mvl_packet_received =
-          mavlink_parse_char(mvl_chan, rxbyte, &mvl_rx_message, &mvl_rx_status);
-      if (mvl_packet_received) {
-        MAV_INFO("Received msgid: %d from sysid: %d", mvl_rx_message.msgid,
-                 mvl_rx_message.sysid);
-        break;
+    while (stream && stream->available() > 0) {
+      int rx = stream->read();
+      if (rx >= 0) {
+        uint8_t rxbyte = rx;
+        mvl_packet_received = mavlink_parse_char(
+            mvl_chan, rxbyte, &mvl_rx_message, &mvl_rx_status);
+        // MAV_DEBUG("available: %d, read byte: 0x%02X, packet received: %d",
+        // stream->available(), rxbyte, mvl_packet_received);
+        if (mvl_packet_received) {
+          MAV_INFO("Received msgid: %d from sysid: %d", mvl_rx_message.msgid,
+                   mvl_rx_message.sysid);
+          break;
+        }
       }
     }
     if ((mvl_packet_received) && (mavlink_system_id == mvl_rx_message.sysid)) {
@@ -137,13 +142,14 @@ class MavlinkController {
     MAV_INFO("System ID set to %d", mavlink_system_id);
     return true;
   }
-  
+
   /// Get the current system ID
   int getSystemId() const { return mavlink_system_id; }
 
  protected:
   static constexpr size_t TX_BUFFER_SIZE = 512;
-  int mavlink_system_id = 255;  // Default system ID for incoming messages
+  int mavlink_system_id =
+      MAVLINK_SYSTEM_ID;  // Default system ID for incoming messages
   MessageCallback messageCallback = nullptr;
   Stream* stream = nullptr;
   ParameterStore* parameterStore = nullptr;
@@ -153,7 +159,7 @@ class MavlinkController {
   mavlink_status_t mvl_rx_status;
   const uint8_t mvl_compid = 1;
   const uint8_t mvl_sysid = 1;
-  const uint8_t mvl_chan = MAVLINK_COMM_1;
+  const uint8_t mvl_chan = MAVLINK_COMM_0;
   const uint32_t hb_interval = 1000;
   uint32_t t_last_hb = 0;
   const uint32_t sys_stat_interval = 100;
@@ -260,6 +266,11 @@ class MavlinkController {
     MAV_INFO("processRequest: %d", mvl_rx_message.msgid);
     mvl_packet_received = 0;
     switch (mvl_rx_message.msgid) {
+      case MAVLINK_MSG_ID_HEARTBEAT:
+        // Heartbeat is handled in loop() to ensure regular processing, so
+        // ignore it here
+        MAV_INFO("Received heartbeat");
+        break;
       case MAVLINK_MSG_ID_MANUAL_CONTROL: {
         handleManualControl(&mvl_rx_message);
         break;
@@ -282,6 +293,7 @@ class MavlinkController {
   }
 
   virtual void processHeartbeat() {
+    MAV_DEBUG("processHeartbeat");
     mavlink_heartbeat_t mvl_hb;
     mvl_hb.type = MAV_TYPE_GENERIC;
     mvl_hb.autopilot = MAV_AUTOPILOT_GENERIC;
@@ -292,6 +304,14 @@ class MavlinkController {
       mvl_hb.base_mode = MAV_MODE_MANUAL_DISARMED;
     }
     mvl_hb.base_mode |= MAV_MODE_FLAG_MANUAL_INPUT_ENABLED;
+    // Capabilities are not part of the heartbeat message struct. Only set
+    // mavlink_version and other valid fields. Set MAVLink version (2 for v2.0+,
+    // 3 for v2.2+)
+#if defined(MAVLINK_VERSION)
+    mvl_hb.mavlink_version = MAVLINK_VERSION;
+#else
+    mvl_hb.mavlink_version = 1;
+#endif
     mavlink_msg_heartbeat_encode_chan(mvl_sysid, mvl_compid, mvl_chan,
                                       &mvl_tx_message, &mvl_hb);
     transmitMessage(&mvl_tx_message);
@@ -299,6 +319,7 @@ class MavlinkController {
   }
 
   virtual void processStat() {
+    MAV_DEBUG("processStat");
     processStatSystem();
     processStatGPS();
     processStatRadioStatus();
@@ -306,10 +327,16 @@ class MavlinkController {
   }
 
   virtual void processStatSystem() {
-    mavlink_sys_status_t mvl_sys_stat;
+    MAV_DEBUG("processStatSystem");
+
+    mavlink_sys_status_t mvl_sys_stat{};
     mvl_sys_stat.onboard_control_sensors_present = 0;
     mvl_sys_stat.onboard_control_sensors_enabled = 0;
     mvl_sys_stat.onboard_control_sensors_health = 0;
+    mvl_sys_stat.onboard_control_sensors_present_extended = 0;
+    mvl_sys_stat.onboard_control_sensors_enabled_extended = 0;
+    mvl_sys_stat.onboard_control_sensors_health_extended = 0;
+
     mvl_sys_stat.load = 0;
     mvl_sys_stat.voltage_battery = getValue(VOLTAGE_BATTERY) * 1000;
     mvl_sys_stat.current_battery = -1;
@@ -326,6 +353,8 @@ class MavlinkController {
   }
 
   virtual void processStatGPS() {
+    MAV_DEBUG("processStatGPS");
+
     mavlink_global_position_int_t pos;
     pos.lat = getValue(GPS_LATITUDE) * 1E7;
     pos.lon = getValue(GPS_LONGITUDE) * 1E7;
@@ -340,6 +369,7 @@ class MavlinkController {
   }
 
   virtual void processStatRadioStatus() {
+    MAV_DEBUG("processStatRadioStatus");
     mavlink_radio_status_t radio;
     radio.remrssi = getValue(RECEIVER_RSSI);
     radio.rssi = getValue(RECEIVER_RSSI);
