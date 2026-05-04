@@ -1,18 +1,18 @@
 /**
  *  In this demo we use TCP/IP to communicate. This is a little bit more difficult then the other demos because we need to 
  *  setup up a server that is managing the connections first before we get the a Client - which is the Stream that we need to
- *  use in our SimpleMavlinkDrone.
+ *  use in our MavlinkController.
  */
 
 #include "WiFi.h" // ESP32 WiFi include
 #include "Ethernet.h"
-#include "SimpleMavlinkDrone.h"
+#include "Mavlink.h"
 
 const int port = 5760;
 const char* ssid = "ssid";
 const char* password = "password";
 WiFiServer server(port);
-SimpleMavlinkDrone drone;
+MavlinkController drone;
 
 void connectToWifi() {
   WiFi.begin(ssid, password);

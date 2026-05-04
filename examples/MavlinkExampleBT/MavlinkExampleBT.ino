@@ -3,7 +3,7 @@
 /**
  *  This is a small demo which is based on the BluetoothSerial. 
  */
-#include "SimpleMavlinkDrone.h"
+#include "Mavlink.h"
 #include "BluetoothSerial.h"
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
@@ -11,7 +11,7 @@
 #endif
 
 BluetoothSerial SerialBT;
-SimpleMavlinkDrone Drone(&SerialBT);
+MavlinkController Drone(&SerialBT);
 
 
 void setup() {
